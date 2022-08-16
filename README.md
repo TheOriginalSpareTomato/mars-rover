@@ -2,7 +2,7 @@
 My solution to the Mars Rover challenge.
 ## Overall Thoughts
 
-I could see two possible solutions to the problem, one was to use a 2-dimensional array as demonstrated in this commit, and the other was by using pure maths to calculate the answer to the algorithm.
+I could see two possible solutions to the problem, one was to use a 2-dimensional array as demonstrated in this repo, and the other was by using pure maths to calculate the answer to the algorithm.
 
 With the mathematical solution I was able to produce the expected responses by multiplying/dividing the position by 100 for north/south movement and adding/subtracting the movement to the position for lateral movements. This was pretty efficient, and didn't require the construction of a 2 dimensional array to represent the grid. However, the solution was not particularly OO, and made it harder for the developer to read.
 
