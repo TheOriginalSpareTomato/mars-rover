@@ -1,10 +1,4 @@
-﻿using MarsRover.Interfaces;
-using MarsRover.Interfaces.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MarsRover.Interfaces.Commands;
 
 namespace MarsRover.Models
 {

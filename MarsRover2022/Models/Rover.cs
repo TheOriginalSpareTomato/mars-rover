@@ -1,13 +1,7 @@
-﻿using MarsRover.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using MarsRover.Models.Exceptions;
-using MarsRover.Interfaces.Commands;
+﻿using MarsRover.Interfaces.Commands;
 using MarsRover.Models.Enums;
+using MarsRover.Models.Exceptions;
+using System.Text.RegularExpressions;
 
 namespace MarsRover.Models
 {
@@ -15,25 +9,26 @@ namespace MarsRover.Models
     {
         private Direction _currentDirection;
         private int _position;
-        private List<IRoverCommand> commandBuffer; // Generics solution means we can add more commands later, such as Drill, Shoot etc. Might be overkill for the problem as written though.
+        private List<IRoverCommand> _commandBuffer; // Generics solution means we can add more commands later, such as Drill, Shoot etc. Might be overkill for the problem as written though.
 
-        private int[,] grid = new int[100, 100];
-        private int xPos = 0;
-        private int yPos = 0;
-        
+        private int[,] _grid;
+        private int _xPos = 0;
+        private int _yPos = 0;
+
 
         public Rover()
         {
+            _grid = new int[100, 100];
             _currentDirection = Direction.South;
-            commandBuffer = new List<IRoverCommand>();
+            _commandBuffer = new List<IRoverCommand>();
             for (int y = 0; y < 100; y++)
             {
                 for (int x = 1; x < 101; x++)
                 {
-                    grid[y, x-1] = x + (y * 100);
+                    _grid[y, x - 1] = x + (y * 100);
                 }
             }
-            _position = grid[xPos, yPos];
+            _position = _grid[_xPos, _yPos];
         }
         public string ReportPosition()
         {
@@ -42,20 +37,20 @@ namespace MarsRover.Models
 
         public string Go()
         {
-            for (int i = 0; i < commandBuffer.Count(); i++)
+            for (int i = 0; i < _commandBuffer.Count(); i++)
             {
-                if (commandBuffer[i].GetType() == typeof(TurnCommand))
+                if (_commandBuffer[i].GetType() == typeof(TurnCommand))
                 {
-                    var cmd = (TurnCommand)commandBuffer[i];
+                    var cmd = (TurnCommand)_commandBuffer[i];
                     Turn(cmd.TurnDirection);
                 }
                 else
                 {
-                    var cmd = (MoveCommand)commandBuffer[i];
+                    var cmd = (MoveCommand)_commandBuffer[i];
                     Drive(cmd.Distance);
                 }
             }
-            commandBuffer.Clear();
+            _commandBuffer.Clear();
             return ReportPosition();
         }
 
@@ -64,52 +59,52 @@ namespace MarsRover.Models
             switch (_currentDirection)
             {
                 case Direction.North:
-                    yPos = yPos - command;
-                    if (yPos < 0)
+                    _yPos = _yPos - command;
+                    if (_yPos < 0)
                     {
-                        yPos = 0;
-                        commandBuffer.Clear();
+                        _yPos = 0;
+                        _commandBuffer.Clear();
                         throw new BoundaryException("Reached the northernmost boundary");
                     }
                     break;
                 case Direction.South:
-                    yPos = yPos + command;
-                    if(yPos == grid.GetLength(0))
+                    _yPos = _yPos + command;
+                    if (_yPos == _grid.GetLength(0))
                     {
-                        yPos = grid.GetLength(0) -1 ;
+                        _yPos = _grid.GetLength(0) - 1;
                     }
-                    if (yPos > grid.GetLength(0))
+                    if (_yPos > _grid.GetLength(0))
                     {
-                        yPos = grid.GetLength(0) - 1;
-                        commandBuffer.Clear();
+                        _yPos = _grid.GetLength(0) - 1;
+                        _commandBuffer.Clear();
                         throw new BoundaryException("Reached the southernmost boundary");
                     }
                     break;
                 case Direction.East:
-                    xPos = xPos + command;
-                    if(xPos == grid.GetLength(1))
+                    _xPos = _xPos + command;
+                    if (_xPos == _grid.GetLength(1))
                     {
-                        xPos = grid.GetLength(1) - 1;
+                        _xPos = _grid.GetLength(1) - 1;
                     }
-                    if (xPos > grid.GetLength(1))
+                    if (_xPos > _grid.GetLength(1))
                     {
-                        xPos = grid.GetLength(1) - 1;
-                        commandBuffer.Clear();
+                        _xPos = _grid.GetLength(1) - 1;
+                        _commandBuffer.Clear();
                         throw new BoundaryException("Reached the easternmost boundary");
                     }
                     break;
                 case Direction.West:
-                    xPos = xPos - command;
-                    if( xPos < 0)
+                    _xPos = _xPos - command;
+                    if (_xPos < 0)
                     {
-                        xPos= 0;
-                        commandBuffer.Clear();
+                        _xPos = 0;
+                        _commandBuffer.Clear();
                         throw new BoundaryException("Reached the westernmost boundary");
                     }
                     break;
             }
 
-             _position = grid[yPos, xPos];
+            _position = _grid[_yPos, _xPos];
         }
 
 
@@ -117,12 +112,12 @@ namespace MarsRover.Models
         public void AddCommand(string command)
         {
             ValidateCommand(command);
-            if (commandBuffer.Count == 5)
+            if (_commandBuffer.Count == 5)
                 throw new CommandBufferException("The Buffer is full, please send command GO to execute");
             if (command == "Left" || command == "Right")
-                commandBuffer.Add(new TurnCommand(command));
+                _commandBuffer.Add(new TurnCommand(command));
             else
-                commandBuffer.Add(new MoveCommand(Convert.ToInt32(command.Replace("m", ""))));
+                _commandBuffer.Add(new MoveCommand(Convert.ToInt32(command.Replace("m", ""))));
         }
 
         private void Turn(string turnDirection)

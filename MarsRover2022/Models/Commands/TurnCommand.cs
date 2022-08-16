@@ -1,14 +1,8 @@
-﻿using MarsRover.Interfaces;
-using MarsRover.Interfaces.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MarsRover.Interfaces.Commands;
 
 namespace MarsRover.Models
 {
-    internal class TurnCommand :IRoverCommand
+    internal class TurnCommand : IRoverCommand
     {
         public string TurnDirection { get; private set; }
         internal TurnCommand(string direction)
