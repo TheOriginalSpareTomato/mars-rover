@@ -26,4 +26,4 @@ As well as new command types, I would probably add the following functionality:
 - Odometer to track how far the rover has travelled
 
 ### Note
-The Console application is a .NET2022 application using the new application templates and global usings. It will not compile in VS2019.
+The Console application is a .NET2022 application using the new application templates and global usings. It will not compile in VS2019. The MSTest projet should run in either VS2019 or VS2022.
