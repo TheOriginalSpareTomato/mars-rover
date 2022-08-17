@@ -146,7 +146,7 @@ namespace MarsRoverTests
             rover.AddCommand("50m");
             rover.AddCommand("Left");
             string currentPos = rover.Go();
-            Assert.AreEqual(currentPos, startPos);
+            Assert.AreEqual(startPos, currentPos);
         }
 
         [TestMethod]
@@ -159,7 +159,7 @@ namespace MarsRoverTests
             rover.AddCommand("Left");
             rover.AddCommand("4m");
 
-            Assert.AreEqual(rover.Go(), "4624 North");
+            Assert.AreEqual("4624 North",rover.Go());
         }
         [TestMethod]
         public void DriveToSouthLimit()
@@ -230,7 +230,7 @@ namespace MarsRoverTests
             rover.AddCommand("100m");
             rover.AddCommand("Left");
             rover.AddCommand("100m");
-            Assert.AreEqual(rover.Go(), "10000 East");
+            Assert.AreEqual("10000 East", rover.Go());
         }
         [TestMethod]
         public void DriveAround()
