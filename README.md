@@ -24,6 +24,7 @@ As well as new command types, I would probably add the following functionality:
 - Validate path will not exceed boundary before running for real
 - Return to start (reset rover position back to square 1)
 - Odometer to track how far the rover has travelled
+- randomly seed the map with obstacles that the rover cannot pass and has to move around to continue on it's journey to the destination.
 
 ### Note
 The Console application is a .NET2022 application using the new application templates and global usings. It will not compile in VS2019. The MSTest projet should run in either VS2019 or VS2022.
